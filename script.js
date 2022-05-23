@@ -3,18 +3,49 @@ const goods = [
   { title: 'Socks', price: 50 },
   { title: 'Jacket', price: 350 },
   { title: 'Shoes', price: 250 },
+
 ];
 
-const renderGoodsItem = ({ title = 'Default title', price = 100 }) => `
-      <div class="goods-item">
-      <img src="https://picsum.photos/200" alt="photo">
-        <h3>${title}</h3>
-        <p>$${price}</p>
-      </div>
-    `;
+class GoodsItem {
+  constructor({ title = 'Default title', price = 0 }) {
+    this.title = title;
+    this.price = price;
+  }
+  render() {
+    return `
+    <div class="goods-item">
+    <img src="https://picsum.photos/200" alt="photo">
+      <h3>${this.title}</h3>
+      <p>${this.price}</p>
+    </div>
+  `;
+  }
+}
+class GoodsList {
+  items = [];
+  fetchGoods() {
+    this.items = goods;
+  }
+  render() {
+    const goods = this.items.map(item => {
+      const goodItem = new GoodsItem(item);
+      return goodItem.render()
+    }).join('');
 
-const renderGoodsList = (list = []) =>
-  document.querySelector('.goods-list').innerHTML =
-  list.map(item => renderGoodsItem(item)).join('');
+    document.querySelector('.goods-list').innerHTML = goods;
+  }
+  getCount() {
+    const initialValue = 0;
+    const sum = this.items.reduce(
+      (accumulator, { price = 0 }) => accumulator + price,
+      initialValue
+    );
+    console.log(sum);
+    document.querySelector('.goods-list').insertAdjacentHTML('afterend', `<div class='sumPrice center_content'>Сумма: $${sum}</div>`);
+  }
+}
 
-renderGoodsList(goods);
+const goodsList = new GoodsList();
+goodsList.fetchGoods();
+goodsList.render();
+goodsList.getCount();

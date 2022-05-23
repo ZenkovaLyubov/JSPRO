@@ -98,6 +98,12 @@ a {
           transform: scale(1.03);
 }
 
+.sumPrice {
+  color: #464543;
+  font-size: 24px;
+  text-align: right;
+}
+
 .footer {
   height: 80px;
   background-color: #464543;
