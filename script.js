@@ -1,22 +1,51 @@
 const goods = [
-    { title: 'Shirt', price: 150 },
-    { title: 'Socks', price: 50 },
-    { title: 'Jacket', price: 350 },
-    { title: 'Shoes', price: 250 },
+  { title: 'Shirt', price: 150 },
+  { title: 'Socks', price: 50 },
+  { title: 'Jacket', price: 350 },
+  { title: 'Shoes', price: 250 },
+
 ];
 
-const renderGoodsItem = (title, price) => {
+class GoodsItem {
+  constructor({ title = 'Default title', price = 0 }) {
+    this.title = title;
+    this.price = price;
+  }
+  render() {
     return `
-      <div class="goods-item">
-        <h3>${title}</h3>
-        <p>${price}</p>
-      </div>
-    `;
-};
+    <div class="goods-item">
+    <img src="https://picsum.photos/200" alt="photo">
+      <h3>${this.title}</h3>
+      <p>${this.price}</p>
+    </div>
+  `;
+  }
+}
+class GoodsList {
+  items = [];
+  fetchGoods() {
+    this.items = goods;
+  }
+  render() {
+    const goods = this.items.map(item => {
+      const goodItem = new GoodsItem(item);
+      return goodItem.render()
+    }).join('');
 
-const renderGoodsList = (list) => {
-    let goodsList = list.map(item => renderGoodsItem(item.title, item.price));
-    document.querySelector('.goods-list').innerHTML = goodsList;
+    document.querySelector('.goods-list').innerHTML = goods;
+  }
+  getCount() {
+    const initialValue = 0;
+    const sum = this.items.reduce(
+      (accumulator, { price = 0 }) => accumulator + price,
+      initialValue
+    );
+    console.log(sum);
+    document.querySelector('.goods-list').insertAdjacentHTML('afterend', `<div class='sumPrice center_content'>Сумма: $${sum}</div>`);
+  }
 }
 
-renderGoodsList(goods);
+const goodsList = new GoodsList();
+goodsList.fetchGoods();
+goodsList.render();
+goodsList.getCount();
