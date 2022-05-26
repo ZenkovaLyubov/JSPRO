@@ -6,16 +6,31 @@ const goods = [
 
 ];
 
+const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
+const GOODS = `${BASE_URL}/catalogData.json`;
+const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
+
+function service(url, callback) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url)
+  xhr.send();
+
+  const loadHandler = () => {
+    callback(JSON.parse(xhr.response))
+  }
+  xhr.onload = loadHandler;
+}
+
 class GoodsItem {
-  constructor({ title = 'Default title', price = 0 }) {
-    this.title = title;
+  constructor({ product_name = 'Default name', price = 0 }) {
+    this.product_name = product_name;
     this.price = price;
   }
   render() {
     return `
     <div class="goods-item">
     <img src="https://picsum.photos/200" alt="photo">
-      <h3>${this.title}</h3>
+      <h3>${this.product_name}</h3>
       <p>${this.price}</p>
     </div>
   `;
@@ -23,8 +38,11 @@ class GoodsItem {
 }
 class GoodsList {
   items = [];
-  fetchGoods() {
-    this.items = goods;
+  fetchGoods(callback) {
+    service(GOODS, (data) => {
+      this.items = data;
+      callback();
+    });
   }
   render() {
     const goods = this.items.map(item => {
@@ -45,7 +63,22 @@ class GoodsList {
   }
 }
 
+class BasketGoods {
+  item = [];
+  fetchData() {
+    service(GOODS_BASKET, (data) => {
+      this.items = data;
+      console.log(this.items);
+    });
+  }
+
+}
+
 const goodsList = new GoodsList();
-goodsList.fetchGoods();
-goodsList.render();
-goodsList.getCount();
+goodsList.fetchGoods(() => {
+  goodsList.render();
+  goodsList.getCount();
+});
+
+const basketGoods = new BasketGoods();
+basketGoods.fetchData();
