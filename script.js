@@ -65,10 +65,11 @@ class GoodsList {
 
 class BasketGoods {
   items = [];
-  fetchData() {
+  fetchGoods(callback = () => { }) {
     service(GOODS_BASKET, (data) => {
       this.items = data.contents;
       console.log(this.items);
+      callback();
     });
   }
 
@@ -81,4 +82,4 @@ goodsList.fetchGoods(() => {
 });
 
 const basketGoods = new BasketGoods();
-basketGoods.fetchData();
+basketGoods.fetchGoods();
