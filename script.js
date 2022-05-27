@@ -64,10 +64,10 @@ class GoodsList {
 }
 
 class BasketGoods {
-  item = [];
+  items = [];
   fetchData() {
     service(GOODS_BASKET, (data) => {
-      this.items = data;
+      this.items = data.contents;
       console.log(this.items);
     });
   }
