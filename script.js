@@ -10,15 +10,8 @@ const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-st
 const GOODS = `${BASE_URL}/catalogData.json`;
 const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
 
-function service(url, callback) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', url)
-  xhr.send();
-
-  const loadHandler = () => {
-    callback(JSON.parse(xhr.response))
-  }
-  xhr.onload = loadHandler;
+function service(url) {
+  return fetch(url).then((res) => res.json());
 }
 
 class GoodsItem {
@@ -31,55 +24,75 @@ class GoodsItem {
     <div class="goods-item">
     <img src="https://picsum.photos/200" alt="photo">
       <h3>${this.product_name}</h3>
-      <p>${this.price}</p>
+      <p>$${this.price}</p>
     </div>
   `;
   }
 }
 class GoodsList {
   items = [];
-  fetchGoods(callback) {
-    service(GOODS, (data) => {
-      this.items = data;
-      callback();
-    });
+  filteredItems = [];
+  fetchGoods() {
+    return new Promise((resolve) =>
+      service(GOODS).then((data) => {
+        this.items = data;
+        this.filteredItems = data;
+        resolve();
+      }))
+      .then(() => {
+        this.render();
+        this.calculatePrice();
+      });
+  }
+  filter(str) {
+    this.filteredItems = this.items.filter(({ product_name }) => {
+      return (new RegExp(str, 'i')).test(product_name);
+    })
   }
   render() {
-    const goods = this.items.map(item => {
+    const goods = this.filteredItems.map(item => {
       const goodItem = new GoodsItem(item);
       return goodItem.render()
     }).join('');
 
     document.querySelector('.goods-list').innerHTML = goods;
   }
-  getCount() {
+  calculatePrice() {
     const initialValue = 0;
-    const sum = this.items.reduce(
+    const sum = this.filteredItems.reduce(
       (accumulator, { price = 0 }) => accumulator + price,
       initialValue
     );
     console.log(sum);
+    const divSum = document.querySelector('.sumPrice');
+    if (divSum) {
+      divSum.remove();
+    }
     document.querySelector('.goods-list').insertAdjacentHTML('afterend', `<div class='sumPrice center_content'>Сумма: $${sum}</div>`);
   }
 }
 
 class BasketGoods {
   items = [];
-  fetchGoods(callback = () => { }) {
-    service(GOODS_BASKET, (data) => {
-      this.items = data.contents;
+  fetchGoods() {
+    service(GOODS).then((data) => {
+      this.items = data;
       console.log(this.items);
-      callback();
     });
   }
-
 }
 
 const goodsList = new GoodsList();
-goodsList.fetchGoods(() => {
-  goodsList.render();
-  goodsList.getCount();
-});
+goodsList.fetchGoods();
+goodsList.calculatePrice();
 
 const basketGoods = new BasketGoods();
 basketGoods.fetchGoods();
+
+document.querySelector('.search-button').addEventListener('click', () => {
+  const input = document.querySelector('.goods-search');
+  goodsList.filter(input.value);
+  goodsList.render();
+  goodsList.calculatePrice();
+})
+
