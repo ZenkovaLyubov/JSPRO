@@ -1,0 +1,96 @@
+$lightColor: #ccc
+$darkColor: #464543
+$widthSite: 1140px
+$widthContent: 1060px
+
+*
+    margin: 0
+    padding: 0
+    box-sizing: border-box
+
+a
+    text-decoration: none
+
+.center
+    padding-left: calc(50% - #{$widthSite/2})
+    padding-right: calc(50% - #{$widthSite/2})
+    &__content
+        padding-left: calc(50% - #{$widthContent/2})
+        padding-right: calc(50% - #{$widthContent/2})
+
+.wrapper
+    min-height: 100vh
+    display: flex
+    flex-direction: column
+
+.top
+    flex-grow: 1
+
+.header
+    height: 80px
+    background-color: $lightColor
+    display: flex
+    justify-content: space-between
+    align-items: center
+    &__right
+        display: flex
+        align-items: center
+        justify-content: center
+        gap: 32px
+
+.logo
+    font-size: 32px
+    color: $darkColor
+
+.button
+    appearance: none
+    border: 1px solid $darkColor
+    border-radius: 5px
+    background: $lightColor
+    color: $darkColor
+    padding: 8px 16px
+    font-size: 14px
+
+    &:hover
+        color: white
+        background: $darkColor
+        cursor: pointer
+
+.goods-search
+    border-radius: 5px
+    border: 1px solid $darkColor
+    background: $lightColor
+    padding: 8px 16px
+    font-size: 14px
+
+    &:focus
+        outline: 0
+        box-shadow: 0 0 0 2px rgba(158, 158, 158, 0.25)
+        color: $darkColor
+        background-color: #fff
+
+.goods-list
+    max-width: $widthContent
+    margin: auto
+    display: grid
+    grid-template-columns: repeat(auto-fill, 200px)
+    justify-content: center
+    gap: 68px
+    margin-top: 30px
+    margin-bottom: 30px
+
+.goods-item
+
+    transition: transform .3s
+
+    &:hover
+        transform: scale(1.03)
+
+.sumPrice
+    color: $darkColor
+    font-size: 24px
+    text-align: right
+
+.footer
+    height: 80px
+    background-color: $darkColor
