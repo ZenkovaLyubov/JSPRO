@@ -11,7 +11,8 @@ const GOODS = `${BASE_URL}/catalogData.json`;
 const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
 
 function service(url) {
-  return fetch(url).then((res) => res.json());
+  return fetch(url)
+    .then((res) => res.json());
 }
 
 class GoodsItem {
@@ -33,16 +34,12 @@ class GoodsList {
   items = [];
   filteredItems = [];
   fetchGoods() {
-    return new Promise((resolve) =>
-      service(GOODS).then((data) => {
-        this.items = data;
-        this.filteredItems = data;
-        resolve();
-      }))
-      .then(() => {
-        this.render();
-        this.calculatePrice();
-      });
+    return service(GOODS).then((data) => {
+      this.items = data;
+      this.filteredItems = data;
+      return data;
+    })
+
   }
   filter(str) {
     this.filteredItems = this.items.filter(({ product_name }) => {
@@ -63,7 +60,9 @@ class GoodsList {
       (accumulator, { price = 0 }) => accumulator + price,
       initialValue
     );
-    console.log(sum);
+    return sum;
+  }
+  renderCalculatePrice(sum) {
     const divSum = document.querySelector('.sumPrice');
     if (divSum) {
       divSum.remove();
@@ -75,24 +74,26 @@ class GoodsList {
 class BasketGoods {
   items = [];
   fetchGoods() {
-    service(GOODS).then((data) => {
+    return service(GOODS).then((data) => {
       this.items = data;
-      console.log(this.items);
+      return data;
     });
   }
 }
 
 const goodsList = new GoodsList();
-goodsList.fetchGoods();
-goodsList.calculatePrice();
+goodsList.fetchGoods().then(() => {
+  goodsList.render();
+  goodsList.renderCalculatePrice(goodsList.calculatePrice());
+});
 
 const basketGoods = new BasketGoods();
-basketGoods.fetchGoods();
+basketGoods.fetchGoods().then((data) => console.log(data));
 
 document.querySelector('.search-button').addEventListener('click', () => {
   const input = document.querySelector('.goods-search');
   goodsList.filter(input.value);
   goodsList.render();
-  goodsList.calculatePrice();
+  goodsList.renderCalculatePrice(goodsList.calculatePrice());
 })
 
