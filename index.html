@@ -6,30 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eShop</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body>
-    <div class="wrapper center">
-        <div class="top">
-            <header class="header center__content">
-                <a href="#" class="logo">eShop</a>
-                <div class="header__right">
-                    <div class="search">
-                        <input type="text" class="goods-search" placeholder="Поиск...">
-                        <button class="button search-button" type="button">Поиск</button>
+    <div id="root">
+        <div class="wrapper center">
+            <div class="top">
+                <header class="header center__content">
+                    <a href="#" class="logo">eShop</a>
+                    <div class="header__right">
+                        <div class="search">
+                            <input type="text" class="goods-search" placeholder="Поиск..." v-model="searchValue">
+                            <!-- <button class="button search-button" type="button">Поиск</button> -->
+                        </div>
+
+                        <button class="button cart-button" type="button">Корзина</button>
                     </div>
 
-                    <button class="button cart-button" type="button">Корзина</button>
-                </div>
-
-            </header>
-            <main>
-                <div class="goods-list center__content"></div>
-            </main>
+                </header>
+                <main>
+                    <div class="goods-list center__content">
+                        <div class="goods-item" v-for="item in filteredItems">
+                            <img src="https://picsum.photos/200" alt="photo">
+                            <h3>{{item.product_name}}</h3>
+                            <p>${{item.price}}</p>
+                        </div>
+                    </div>
+                    <div class='sumPrice center_content'>Сумма: ${{calculatePrice}}</div>
+                </main>
+            </div>
+            <footer class="footer"></footer>
         </div>
-        <footer class="footer"></footer>
+
     </div>
-    <script src="script.js"></script>
 </body>
 
 </html>
