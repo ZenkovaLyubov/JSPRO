@@ -4,7 +4,7 @@ const GOODS_BASKET = `${BASE_URL}/getBasket.json`;
 
 function service(url) {
   return fetch(url)
-    .then((res) => res.json());
+    .then((res) => res.json())
 }
 
 window.onload = () => {
@@ -13,11 +13,26 @@ window.onload = () => {
     data: {
       items: [],
       searchValue: '',
+      isVisibleCart: false,
+      whileItemsEmpty: true,
+      ItemsEmpty: false,
+    },
+    methods: {
+      cartVisibleToggle() {
+        if (this.isVisibleCart) {
+          this.isVisibleCart = false;
+        }
+        else {
+          this.isVisibleCart = true;
+        }
+
+      }
     },
     mounted() {
       service(GOODS).then((data) => {
         this.items = data;
         this.filteredItems = data;
+        this.whileItemsEmpty = false;
         return data;
       })
     },
@@ -34,8 +49,8 @@ window.onload = () => {
         return this.items.filter(({ product_name }) => {
           return product_name.match(new RegExp(this.searchValue, 'gui'));
         })
-      }
-    }
+      },
+    },
   })
 }
 
