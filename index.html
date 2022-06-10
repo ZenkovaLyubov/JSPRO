@@ -18,36 +18,23 @@
                 <header class="header center__content">
                     <a href="#" class="logo">eShop</a>
                     <div class="header__right">
-                        <div class="search">
-                            <input type="text" class="goods-search" placeholder="Поиск..." v-model="searchValue">
-                        </div>
-
-                        <button class="button cart-button" type="button" @click="cartVisibleToggle">Корзина</button>
+                        <base-search v-model="searchValue">
+                        </base-search>
+                        <custom-button @click="setVisibleCart">Корзина</custom-button>
                     </div>
                 </header>
                 <main>
-                    <div v-if="isVisibleCart" class="cart-window center__content">
-                        <i class="fa-solid fa-xmark close-icon" @click="cartVisibleToggle"></i>
-                        <div class="cart-list ">
 
-                            <div class="goods-item">
-                                <img src="img/product.jpg" alt="photo">
-                                <h3>Название товара</h3>
-                                <p>$Цена</p>
-                            </div>
-                        </div>
+                    <div class="goods-list center__content" v-if="filteredItems.length">
+                        <good v-for="item in filteredItems" :item="item"></good>
+
                     </div>
-                    <div class="goods-list center__content">
-                        <h3 v-if="whileItemsEmpty">Нет данных</h3>
-                        <div class="goods-item" v-for="item in filteredItems">
-                            <img src="https://picsum.photos/200" alt="photo">
-                            <h3>{{item.product_name}}</h3>
-                            <p>${{item.price}}</p>
-                        </div>
-                    </div>
+                    <h3 class="goods-list_heading" v-else>Нет данных</h3>
                     <div class='sumPrice center_content'>Сумма: ${{calculatePrice}}</div>
                 </main>
+                <basket v-if="isVisibleCart" @close="setVisibleCart"></basket>
             </div>
+            <alert v-if="isErrorAlert" @close="setErrorAlert"></alert>
             <footer class="footer"></footer>
         </div>
 
