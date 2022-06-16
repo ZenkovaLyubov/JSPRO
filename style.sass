@@ -105,12 +105,34 @@ a
     display: grid
     grid-template-columns: repeat(auto-fill, 190px)
     justify-content: center
-    gap: 68px
+    gap: 32px
     margin-top: 32px
     margin-bottom: 32px
 
+.count_module
+    display: flex
+    align-items: center
+    gap: 12px
+
+.count_button
+    appearance: none
+    border: 1px solid $darkColor
+    border-radius: 5px
+    background: $lightColor
+    color: $darkColor
+    padding: 4px 8px
+    font-size: 14px
+    width: 26px
+    &:hover
+        color: white
+        background: $darkColor
+        cursor: pointer
+
 .goods-item
     transition: transform .3s
+    display: flex
+    flex-direction: column
+    gap: 8px
 
     &:hover
         transform: scale(1.03)

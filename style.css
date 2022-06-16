@@ -150,9 +150,38 @@ a {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  gap: 68px;
+  gap: 32px;
   margin-top: 32px;
   margin-bottom: 32px;
+}
+
+.count_module {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 12px;
+}
+
+.count_button {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid #464543;
+  border-radius: 5px;
+  background: #ccc;
+  color: #464543;
+  padding: 4px 8px;
+  font-size: 14px;
+  width: 26px;
+}
+
+.count_button:hover {
+  color: white;
+  background: #464543;
+  cursor: pointer;
 }
 
 .goods-item {
@@ -160,6 +189,14 @@ a {
   transition: -webkit-transform .3s;
   transition: transform .3s;
   transition: transform .3s, -webkit-transform .3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 8px;
 }
 
 .goods-item:hover {
