@@ -1,13 +1,23 @@
-// const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
 const BASE_URL = "http://localhost:8000/";
-// const GOODS = `${BASE_URL}/catalogData.json`;
+const GOODS_ADD = `${BASE_URL}goods`;
 const GOODS = `${BASE_URL}goods.json`;
-//const GOODS_BASKET = `${BASE_URL}getBasket.json`;
 const GOODS_BASKET = `${BASE_URL}basket`;
 
 function service(url) {
   return fetch(url)
     .then((res) => res.json())
+}
+function serviceWithBody(url="", method="POST", body={}) {
+  return fetch(
+    url,
+    {
+      method,
+      headers:{
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(body)
+    }
+  ).then((res) => res.json());
 }
 
 window.onload = () => {
@@ -22,12 +32,15 @@ window.onload = () => {
       <h3>{{item.product_name}}</h3>
       <p>{{item.price}}$</p>
       <div class="count_module">
-        <button class="count_button">-</button>
+     
+      <custom-button class="count_button" @click="$emit('del', item.id_product)">-</custom-button>
+     
         <p>{{item.count}}</p>
-        <button class="count_button">+</button>
+        <custom-button class="count_button" @click="$emit('add', item.id_product)">+</custom-button>
       </div>
     </div>
-    `
+    `,
+   
   }) 
 
 Vue.component('alert', {
@@ -62,23 +75,48 @@ Vue.component('basket', {
   data(){
     return{
       basketGoodsItems: []
-
+    
     }
   },
   template:`
   <div class="cart-window center__content">
                     <i class="fa-solid fa-xmark close-icon" @click="$emit('close')"></i>
-                    <div class="cart-list ">
-                     
-                        <basket_product v-for="item in basketGoodsItems" :item="item"></basket_product>
-                      
+                    <div class="cart-list " v-if="basketGoodsItems.length">
+                    
+                        <basket_product 
+                        v-for="item in basketGoodsItems" 
+                        :item="item"
+                        @add="addGood"
+                        @del="delGood"
+                        ></basket_product>
+                                            
                     </div>
+                    <h3 v-else>Корзина пуста</h3>
+                   
                 </div>
   `,
   mounted(){
     service(GOODS_BASKET).then((data)=>{
       this.basketGoodsItems = data;
     })
+  },
+  methods:{
+    addGood(id){
+      serviceWithBody(GOODS_BASKET, "POST", {
+        id
+      }).then((data)=>{
+          this.basketGoodsItems = data;
+      
+      })
+    },
+    delGood(id){
+      serviceWithBody(GOODS_BASKET, "DELETE", {
+        id
+      }).then((data)=>{
+          this.basketGoodsItems = data;
+     
+      })
+    }
   }
 })
 Vue.component('custom-button', {
@@ -98,8 +136,19 @@ Vue.component('good', {
                             <img src="https://picsum.photos/200" alt="photo">
                             <h3>{{item.product_name}}</h3>
                             <p>{{item.price}}$</p>
-                        </div>
-  `
+                            <div>
+                            <custom-button @click="addGood">В Корзину</custom-button>
+                            </div>
+                            </div>
+                        
+  `,
+  methods:{
+    addGood(){
+      serviceWithBody(GOODS_BASKET, "POST", {
+        id: this.item.id_product,
+      })
+    }
+  }
   
 })
 

@@ -140,6 +140,10 @@ a {
   margin-bottom: 32px;
 }
 
+.goods-list_heading {
+  margin-top: 32px;
+}
+
 .cart-list {
   max-width: 448px;
   margin: auto;
@@ -166,22 +170,8 @@ a {
 }
 
 .count_button {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  border: 1px solid #464543;
-  border-radius: 5px;
-  background: #ccc;
-  color: #464543;
   padding: 4px 8px;
-  font-size: 14px;
   width: 26px;
-}
-
-.count_button:hover {
-  color: white;
-  background: #464543;
-  cursor: pointer;
 }
 
 .goods-item {
