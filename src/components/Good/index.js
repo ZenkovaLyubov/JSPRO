@@ -1,5 +1,5 @@
-import {BASE_URL, GOODS_ADD, GOODS, GOODS_BASKET} from '/src/constants.js';
-import {service, serviceWithBody} from '/src/services.js';
+import {BASE_URL, GOODS_ADD, GOODS, GOODS_BASKET} from '/src/constants';
+import {service, serviceWithBody} from '/src/services';
 
 export default Vue.component('good', {
   props:[

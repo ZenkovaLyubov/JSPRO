@@ -47,7 +47,6 @@ const readGoods = () =>
 
 app.post('/basket', (res, req) =>{
     readBasket().then((basket)=>{
-    console.log(basket);
     const basketItem = basket.find(({id_product: _id}) => _id === res.body.id);
     if(!basketItem){
       basket.push({
@@ -79,13 +78,11 @@ app.post('/basket', (res, req) =>{
 
 app.delete('/basket', (res, req) => {
   readBasket().then((basket)=>{
-    console.log("BASKET" + JSON.stringify(basket));
     const basketItem = basket.find(({id_product: _id}) => _id === res.body.id);
     if(basketItem.count === 1){
 
       basket = basket.filter(({id_product: _id}) => _id !== res.body.id);
-      console.log("hello" + JSON.stringify(basketItem.count));
-
+      
     }
     else{
       basket = basket.map((basketItem)=>{

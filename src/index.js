@@ -1,12 +1,12 @@
-import {BASE_URL, GOODS_ADD, GOODS, GOODS_BASKET} from './constants.js';
-import {service, serviceWithBody} from './services.js';
+import {BASE_URL, GOODS_ADD, GOODS, GOODS_BASKET} from './constants';
+import {service, serviceWithBody} from './services';
 import './style.css';
-import './components/BasketProduct/index.js';
-import './components/CustomButton/index.js';
-import './components/Alert/index.js';
-import './components/BaseSearch/index.js';
-import './components/Basket/index.js';
-import './components/Good/index.js';
+import './components/BasketProduct';
+import './components/CustomButton';
+import './components/Alert';
+import './components/BaseSearch';
+import './components/Basket';
+import './components/Good';
 
 window.onload = () => {
   
