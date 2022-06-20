@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eShop</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://kit.fontawesome.com/04922efd3c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div id="root">
+        <div class="wrapper center">
+            <div class="top">
+                <header class="header center__content">
+                    <a href="#" class="logo">eShop</a>
+                    <div class="header__right">
+                        <base-search v-model="searchValue">
+                        </base-search>
+                        <custom-button @click="setVisibleCart">Корзина</custom-button>
+                    </div>
+                </header>
+                <main>
+
+                    <div class="goods-list center__content" v-if="filteredItems.length">
+                        <good v-for="item in filteredItems" :item="item"></good>
+
+                    </div>
+                    <h3 class="goods-list_heading" v-else>Нет данных</h3>
+                    <div class='sumPrice center_content'>Сумма: ${{calculatePrice}}</div>
+                </main>
+                <basket v-if="isVisibleCart" @close="setVisibleCart"></basket>
+            </div>
+            <alert v-if="isErrorAlert" @close="setErrorAlert"></alert>
+            <footer class="footer"></footer>
+        </div>
+
+    </div>
+</body>
+
+</html>
